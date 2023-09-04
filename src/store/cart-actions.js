@@ -24,7 +24,8 @@ export const fetchCartData = () => {
                 status:"success",
                 title:"success!",
                 message:"fetching cart data successfully ! ",}))
-            dispatch(cartActions.replaceCart(cartData))
+            dispatch(cartActions.replaceCart({items: cartData.items||[],
+            totalQuantity:cartData.totalQuantity}))
         }catch{
             dispatch(uiActions.shownotification({
                 status:"error",
@@ -46,7 +47,10 @@ export const sendCartData = (cart)=>{
   
         const sendRequest=async()=>{
           const response=await fetch('https://http-test-5cfcc-default-rtdb.firebaseio.com/productCart.json',{method:"PUT",
-           body:JSON.stringify(cart)});
+           body:JSON.stringify({
+            items:cart.items,
+            totalQuantity : cart.totalQuantity,
+           })});
   
           if(!response.ok){
           throw new Error ("sending cart data failed !")
